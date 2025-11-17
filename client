@@ -1,0 +1,25 @@
+
+import socket
+import pickle
+
+def get_factorial_from_server(number, host, port):
+    """Request the factorial from the server"""
+    client = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+    client.connect((host, port))
+    
+    # Serialize the number and send to the server
+    request = pickle.dumps(number)
+    client.send(request)
+
+    # Receive the result from the server
+    response = client.recv(1024)
+    result = pickle.loads(response) 
+
+    return result
+
+if __name__ == "__main__":
+    number = int(input("Enter a number to calculate its factorial: "))
+    server_ip = input("Enter the server IP address (Laptop IP): ")  # Example: "192.168.x.x"
+    result = get_factorial_from_server(number, server_ip, 9999)
+    print(f"The factorial of {number} is: {result}")
+
