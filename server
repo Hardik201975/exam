@@ -1,0 +1,44 @@
+# server.py
+
+import socket
+import pickle
+
+def factorial(n):
+    """Function to compute the factorial of a number"""
+    if n == 0:
+        return 1
+    return n * factorial(n-1)
+
+def handle_client(client_socket):
+    """Handle the client request, process the RPC"""
+    try:
+        # Receive the request from the client (the number for factorial)
+        request = client_socket.recv(1024)
+        number = pickle.loads(request)  # Deserialize the number
+
+        # Compute the factorial
+        result = factorial(number)
+
+        # Send the result back to the client
+        response = pickle.dumps(result)  # Serialize the result
+        client_socket.send(response)
+
+    except Exception as e:
+        print(f"Error handling client request: {e}")
+    finally:
+        client_socket.close()
+
+def start_server(host, port):
+    """Start the server to listen for client requests"""
+    server = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+    server.bind((host, port))
+    server.listen(5)
+    print(f"Server listening on {host}:{port}...")
+
+    while True:
+        client_socket, addr = server.accept()
+        print(f"Accepted connection from {addr}")
+        handle_client(client_socket)
+
+if __name__ == "__main__":
+    start_server("0.0.0.0", 9999)  # Bind to all available network interfaces (local IP)
