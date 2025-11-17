@@ -30,4 +30,17 @@ if __name__ == "__main__":
     print(f" result is: {result}")
 
 
+ubuntu1@ubuntu1:~/Desktop$ python3 a.py
+5
+2
+5
+1
+8
+9
+Enter the server IP address (Laptop IP): 172.27.192.1
+ result is: (False, '1 - 9', 5.0)
+ubuntu1@ubuntu1:~/Desktop$ 
+
+
+
 
